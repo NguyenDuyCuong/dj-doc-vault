@@ -17,3 +17,30 @@ Ngrok giúp bạn dễ dàng tạo một URL công khai để truy cập vào se
    ngrok http 8000
    ```
 5. **Sử dụng URL ngrok** để truy cập ứng dụng hoặc kiểm thử API.
+
+
+---
+# **Steps to Run Projects**
+
+1. **Forward Ports từ Server qua SSH:**  
+   Dùng SSH để forward các cổng cần thiết từ server để truy cập dịch vụ từ xa.
+
+2. **Chạy Frontend:**  
+   Sử dụng lệnh sau để khởi động frontend với Tailwind:
+   ```bash
+   python src/manage.py tailwind start
+   ```
+
+3. **Chạy Backend:**  
+   Khởi động backend bằng Django với lệnh:
+   ```bash
+   python src/manage.py runserver
+   ```
+
+4. **Forward Domain từ Ngrok:**  
+   Nếu bạn cần tạo đường dẫn public qua Ngrok, sử dụng:
+   ```bash
+   ngrok http 8000
+   ```
+
+Các bước này giúp bạn nhanh chóng thiết lập môi trường phát triển cho dự án của mình. Nếu cần thêm hỗ trợ hoặc muốn tinh chỉnh thêm, hãy cho tôi biết nhé! 🚀

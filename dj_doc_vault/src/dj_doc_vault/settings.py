@@ -13,7 +13,7 @@ from opensearchpy import AWSV4SignerAuth, RequestsHttpConnection
 load_dotenv(verbose=True)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -359,3 +359,4 @@ SUBSCRIPTION_TRIAL_PERIOD_DAYS = 14
 AUTH_USER_NAME_MAX_LENGTH = int(os.environ.get("AUTH_USER_NAME_MAX_LENGTH", "150"))
 
 NPM_BIN_PATH = "npm.cmd"
+CSRF_TRUSTED_ORIGINS = ["https://*.ngrok-free.app"]
