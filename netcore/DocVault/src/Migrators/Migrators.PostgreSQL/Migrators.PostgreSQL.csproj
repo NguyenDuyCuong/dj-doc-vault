@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AssemblyName>DocVault.Migrators.PostgreSQL</AssemblyName>
+        <RootNamespace>DocVault.Migrators.PostgreSQL</RootNamespace>
+        <LangVersion>default</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Infrastructure\Infrastructure.csproj"/>
+    </ItemGroup>
+
+</Project>

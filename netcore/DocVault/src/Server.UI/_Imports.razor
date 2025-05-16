@@ -1,0 +1,68 @@
+﻿@using System.Net.Http
+@using System.Net.Http.Json
+@using System.Reflection
+@using System.Text
+@using System.ComponentModel
+@using DocVault.Application.Common.Interfaces.MediatorWrapper
+@using DocVault.Server.UI.Services
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.Extensions.DependencyInjection
+@using Microsoft.Extensions.Configuration
+@using Microsoft.Extensions.Localization
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.JSInterop
+@using MudBlazor
+@using MediatR
+@using AutoMapper
+@using AutoMapper.QueryableExtensions
+@using FluentValidation;
+@using DocVault.Domain
+@using DocVault.Application.Common.ExceptionHandlers
+@using DocVault.Application.Common.Extensions
+@using DocVault.Application.Common.Interfaces
+@using DocVault.Application.Common.Models
+@using DocVault.Application.Common.Security
+@using DocVault.Infrastructure.PermissionSet;
+@using DocVault.Infrastructure.Constants
+@using DocVault.Infrastructure.Extensions
+@using DocVault.Infrastructure.Configurations
+@using DocVault.Server.UI.Models
+@using DocVault.Server.UI
+@using DocVault.Server.UI.Shared
+@using DocVault.Server.UI.Components
+@using DocVault.Server.UI.Components.Forms
+@using DocVault.Server.UI.Components.Breadcrumbs
+@using DocVault.Server.UI.Components.LoadingButton
+@using DocVault.Server.UI.Components.Autocompletes
+@using DocVault.Server.UI.Components.Dialogs
+@using DocVault.Server.UI.Components.Identity
+@using DocVault.Server.UI.Pages.Identity.Authentication
+@using DocVault.Server.UI.Components.Localization
+@using DocVault.Server.UI.Components.OptionSelect
+@using DocVault.Server.UI.Components.Redirections
+@using DocVault.Server.UI.Components.Shared
+@using DocVault.Server.UI.Components.Shared.Themes
+@using DocVault.Server.UI.Components.Shared.Layout
+@using DocVault.Server.UI.Services.Layout
+@using DocVault.Server.UI.Extensions
+@using DocVault.Server.UI.Services.JsInterop
+@using Severity=MudBlazor.Severity
+@using Color = MudBlazor.Color
+@inject IApplicationSettings ApplicationSettings
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+@inject IConfiguration Config
+@inject IAuthorizationService AuthService 
+@inject IValidationService Validator
+@inject IJSRuntime JS
+@inject IMediator Mediator
+@inject NavigationManager Navigation
+@inject DialogServiceHelper DialogServiceHelper
+@inject IPermissionService PermissionService
+@inject IMapper Mapper

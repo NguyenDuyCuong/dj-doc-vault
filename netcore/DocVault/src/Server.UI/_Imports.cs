@@ -1,0 +1,11 @@
+﻿global using System.Data;
+global using DocVault.Application.Common.Interfaces;
+global using DocVault.Application.Common.Models;
+global using DocVault.Infrastructure.Extensions;
+global using DocVault.Domain.Entities;
+global using DocVault.Server.UI.Components;
+global using FluentValidation;
+global using Microsoft.AspNetCore.Components;
+global using MudBlazor;
+global using Microsoft.EntityFrameworkCore;
+global using AutoMapper;
