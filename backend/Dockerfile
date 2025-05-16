@@ -1,4 +1,4 @@
-FROM python:3.13-slim-bookworm
+FROM docker.io/library/python:3.13-slim-bookworm
 
 ENV PYTHONUNBUFFERED=1
 ENV UV_PROJECT_ENVIRONMENT=/.venv

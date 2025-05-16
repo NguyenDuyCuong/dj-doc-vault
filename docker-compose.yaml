@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres
+    image: docker.io/library/postgres
     expose:
       - "5432"
     ports:
@@ -8,7 +8,7 @@ services:
     volumes:
       - ./data:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: "change-password"
+      POSTGRES_PASSWORD: "Abcd@1234"
       POSTGRES_DB: "db"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]

@@ -1,4 +1,4 @@
-FROM node:21
+FROM docker.io/library/node:21
 
 ENV NEXT_TELEMETRY_DISABLED=1
 
