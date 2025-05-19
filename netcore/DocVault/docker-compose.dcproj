@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿
 <Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
     <PropertyGroup Label="Globals">
         <ProjectVersion>2.1</ProjectVersion>
@@ -7,16 +7,17 @@
         <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
         <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
         <DockerServiceName>dashboard</DockerServiceName>
-    </PropertyGroup>
+      <UserSecretsId>1791f5f1-2ff1-42de-ad1b-f14de0e18102</UserSecretsId>
+  </PropertyGroup>
     <ItemGroup>
-        <None Include="docker-compose.yml"/>
-        <None Include="docker-compose.override.yml"/>
-        <None Include=".dockerignore"/>
+        <None Include="docker-compose.yml" />
+        <None Include="docker-compose.override.yml" />
+        <None Include=".dockerignore" />
     </ItemGroup>
     <ItemGroup>
-        <None Remove="launchSettings.json"/>
+        <None Remove="launchSettings.json" />
     </ItemGroup>
     <ItemGroup>
-        <None Remove="src\**"/>
+        <None Remove="src\**" />
     </ItemGroup>
 </Project>

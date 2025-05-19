@@ -1,4 +1,5 @@
-﻿using DocVault.Application.Common.Extensions;
+﻿using System.Web;
+using DocVault.Application.Common.Extensions;
 using DocVault.Infrastructure.Configurations;
 using Microsoft.AspNetCore.StaticFiles;
 using Minio;
@@ -64,7 +65,7 @@ public class MinioUploadService : IUploadService
         }
 
         // Return the URL constructed using the configured Endpoint.
-        return $"https://{_endpoint}/{_bucketName}/{objectName}";
+        return $"http://{_endpoint}/{_bucketName}/{folderPath}/{HttpUtility.UrlPathEncode(request.FileName)}";
     }
     public async Task RemoveAsync(string filename)
     {
@@ -78,7 +79,7 @@ public class MinioUploadService : IUploadService
         // Extract the bucket from the path portion of the URL
         string[] pathParts = fileUri.AbsolutePath.TrimStart('/').Split('/', 2);
         if (pathParts.Length < 2)
-            throw new ArgumentException("URL format must be 'https://<endpoint>/<bucket>/<object>'.");
+            throw new ArgumentException("URL format must be 'http://<endpoint>/<bucket>/<object>'.");
 
         string bucket = pathParts[0];  
         string objectName = pathParts[1];  

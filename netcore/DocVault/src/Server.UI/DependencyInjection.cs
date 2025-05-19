@@ -146,7 +146,7 @@ public static class DependencyInjection
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseAntiforgery();
-        app.UseHttpsRedirection();
+        // app.UseHttpsRedirection();
         app.MapStaticAssets();
         
 
