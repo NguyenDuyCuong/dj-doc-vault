@@ -1,0 +1,10 @@
+<h1>GPT Chat</h1>
+<form method="post">
+  {% csrf_token %}
+  <textarea name="message" rows="4" cols="60" placeholder="Nhập câu hỏi..."></textarea><br>
+  <button type="submit">Gửi</button>
+</form>
+{% if response %}
+  <h3>Trả lời:</h3>
+  <pre>{{ response }}</pre>
+{% endif %}
