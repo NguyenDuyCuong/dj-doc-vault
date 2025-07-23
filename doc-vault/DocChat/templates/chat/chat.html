@@ -1,10 +1,21 @@
-<h1>GPT Chat</h1>
-<form method="post">
-  {% csrf_token %}
-  <textarea name="message" rows="4" cols="60" placeholder="Nhập câu hỏi..."></textarea><br>
-  <button type="submit">Gửi</button>
-</form>
-{% if response %}
-  <h3>Trả lời:</h3>
-  <pre>{{ response }}</pre>
-{% endif %}
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h4 class="mb-3">DocChat</h4>
+    <div class="chat-window p-3 bg-light mb-3">
+        {% for m in messages %}
+            <p class="message {{ m.role }}">
+                <span class="badge badge-primary">{{ m.role }}</span>
+                {{ m.content }}
+            </p>
+        {% endfor %}
+    </div>
+    <form method="post" class="input-group">
+        {% csrf_token %}
+        <input type="text" name="query" class="form-control" placeholder="Nhập tin nhắn…">
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="submit">Gửi</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

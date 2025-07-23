@@ -1,0 +1,10 @@
+.chat-window {
+    max-width: 720px;
+    margin: 0 auto;
+    border: 1px solid #e0e0e0;
+    border-radius: .5rem;
+    height: 70vh;
+    overflow-y: auto;
+}
+.message.me   { text-align: right; }
+.message.bot  { text-align: left;  }

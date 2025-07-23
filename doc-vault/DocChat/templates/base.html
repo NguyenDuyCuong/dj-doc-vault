@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DocChat</title>
+
+    <!-- Shards UI CSS (bao gồm Bootstrap 4) -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/shards-ui/3.1.0/css/shards.min.css"
+          integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Nếu cần custom thêm -->
+    <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+</head>
+<body>
+    {% block content %}{% endblock %}
+    <!-- jQuery + Bootstrap + Shards UI JS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shards-ui/3.1.0/js/shards.min.js"></script>
+    <script src="{% static 'js/chat.js' %}"></script>
+</body>
+</html>
