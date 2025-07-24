@@ -3,8 +3,7 @@ import argparse
 from pathlib import Path
 from crawl4ai import AsyncWebCrawler
 from crawl4ai.async_configs import BrowserConfig, CrawlerRunConfig, CacheMode
-
-from urllib.parse import urljoin
+import re
 
 async def get_chapter_links_api(story_id: int, last_page: int, crawler: AsyncWebCrawler, run_config: CrawlerRunConfig):
     """Crawl all paginated list pages starting from `list_url` and return a set of chapter links.
@@ -34,8 +33,25 @@ async def get_chapter_links_api(story_id: int, last_page: int, crawler: AsyncWeb
         added = len(collected_links) - before
         print(f"Page {page}: +{added} chapters (total {len(collected_links)})")
 
-    return collected_links
+    return sorted(collected_links)
 
+
+async def download_chapters(links: list[str], crawler: AsyncWebCrawler, run_config: CrawlerRunConfig, dest: Path):
+    """Download content of each chapter link and save as markdown files in *dest* directory."""
+    dest.mkdir(parents=True, exist_ok=True)
+    for idx, link in enumerate(links, start=1):
+        res = await crawler.arun(url=link, config=run_config)
+        if not res.success:
+            print(f"Failed to crawl {link}: {res.error_message}")
+            continue
+
+        # Extract chapter number from URL or title
+        m = re.search(r"chuong-(\d+)", link)
+        chap_num = m.group(1) if m else f"{idx}"
+        filename = dest / f"chapter_{chap_num}.md"
+        with open(filename, "w", encoding="utf-8") as f:
+            f.write(res.markdown)
+        print(f"Saved chapter {chap_num} -> {filename}")
 
 async def main():
     # CLI arguments
@@ -43,7 +59,7 @@ async def main():
     parser.add_argument("--story_id", type=int, required=True, help="Numeric ID in /doc-truyen/page/{id}")
     parser.add_argument("--slug", required=True, help="Story slug used for filename, e.g. tran-van-truong-sinh")
     parser.add_argument("--pages", type=int, required=True, help="Last page index (0-based)")
-    parser.add_argument("--out_dir", default=".", help="Directory to save output files")
+    parser.add_argument("--out_dir", default=".", help="Directory to save output files and chapters")
     args = parser.parse_args()
 
     story_id = args.story_id
@@ -79,6 +95,12 @@ async def main():
             for link in sorted(chapter_links):
                 f.write(link + "\n")
         print(f"Saved {len(chapter_links)} links to {output_path}")
+
+        # Download chapter contents
+        chapters_dir = output_dir / args.slug
+        print(f"\nDownloading chapter contents to {chapters_dir} ...")
+        await download_chapters(chapter_links, crawler, run_config, chapters_dir)
+        print("Download completed.")
 
 if __name__ == "__main__":
     asyncio.run(main())
