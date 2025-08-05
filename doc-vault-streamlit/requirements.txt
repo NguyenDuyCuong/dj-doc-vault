@@ -1,0 +1,8 @@
+streamlit
+langchain
+openai
+duckduckgo-search
+anthropic
+trubrics
+streamlit-feedback
+langchain-community
