@@ -1,0 +1,33 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Doc Vault</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    {% block favicon %}
+        <!-- Child templates will inject favicon here -->
+    {% endblock %}
+
+    {% tailwind_css %}
+
+    {% if DEBUG %}
+    <script type="text/javascript" src="{% static 'django-browser-reload/reload-listener.js' %}"
+        data-worker-script-path="{% static 'django-browser-reload/reload-worker.js' %}"
+        data-events-path="{% static 'django-browser-reload/events.json' %}"></script>
+    {% endif %}
+</head>
+
+<body class="bg-gray-50 text-black font-customSans leading-normal tracking-normal">
+
+    <div class="container">
+        {% block content %}
+        <!-- Child templates will inject content here -->
+        {% endblock %}
+    </div>
+</body>
+
+</html>
