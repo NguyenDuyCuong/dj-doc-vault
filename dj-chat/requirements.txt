@@ -1,0 +1,3 @@
+# Change to `requirements/production.txt` once the app is ready for production
+
+-r requirements/local.txt
