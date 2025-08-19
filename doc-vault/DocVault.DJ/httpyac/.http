@@ -1,0 +1,15 @@
+POST http://localhost:8000/auth/users/
+Content-Type: application/json
+
+{
+    "username": "cuongnd",
+    "password": "Abcd1234"
+}
+
+POST http://localhost:8000/auth/token/login/
+Content-Type: application/json
+
+{
+    "username": "cuongnd",
+    "password": "Abcd1234"
+}
