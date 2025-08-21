@@ -87,20 +87,6 @@ class ChatSessionMessageView(APIView):
             user=user, chat_session=chat_session, message=message
         )
 
-        notif_args = {
-            'source': user,
-            'source_display_name': user.get_full_name(),
-            'category': 'chat', 'action': 'Sent',
-            'obj': chat_session_message.id,
-            'short_description': 'You a new message', 'silent': True,
-            'extra_data': {
-                notifs_settings.NOTIFICATIONS_WEBSOCKET_URL_PARAM:
-                chat_session.uri,
-                'message': chat_session_message.to_json()
-            }
-        }
-        notify(**notif_args, channels=['websocket'])
-
         return Response({
             'status': 'SUCCESS', 'uri': chat_session.uri, 'message': message,
             'user': deserialize_user(user)

@@ -1,0 +1,36 @@
+# Django ignores
+*.log
+*.pot
+*.pyc
+__pycache__/
+db.sqlite3
+media/
+static/
+.env/
+venv/
+
+# OS-specific ignores
+.DS_Store
+Thumbs.db
+
+# IDE-specific ignores
+.idea/
+*.iml
+.vscode/
+
+# Package manager ignores
+node_modules/
+
+# Compiled files
+*.so
+*.mo
+
+# Distribution archives
+dist/
+build/
+
+# Virtual environment
+.venv
+
+# Editor backup files
+*~
