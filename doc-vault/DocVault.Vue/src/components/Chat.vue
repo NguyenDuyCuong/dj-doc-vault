@@ -1,71 +1,37 @@
 <template>
-  <div class="container mx-auto">
-    <div class="col-sm-6 offset-md-3">
-
+  <div class="d-flex justify-content-center">
+    <div class="" style="width: 600px;">
       <div v-if="sessionStarted" id="chat-container" class="card">
         <div class="card-header text-white text-center fw-bold subtle-blue-gradient">
           Share the page URL to invite new friends
         </div>
 
         <div class="card-body">
-          <div class="container chat-body">
-            <div class="row chat-section">
-              <div class="col-sm-2">
-                <div class="circle-icon rounded-circle">D</div>
+          <div class="d-flex flex-column">
+            <div v-for="(message, index) in messages" :key="index" class="d-flex my-1"
+              :class="message.user.username === username ? 'justify-content-end' : 'justify-content-start'">
+              <div v-if="message.user.username !== username" class="">
+                <div class="circle-icon rounded-circle">{{ message.user.username.charAt(0).toUpperCase() }}</div>
               </div>
-              <div class="col-sm-7">
-                <span class="card-text speech-bubble speech-bubble-peer">Hello!</span>
-              </div>
-            </div>
-            <div class="row chat-section">
-              <div class="col-sm-7 offset-md-3">
-                <span class="card-text speech-bubble speech-bubble-user float-end text-white subtle-blue-gradient">
-                  Whatsup, another chat app?
+              <div class="flex-fill"
+                :class="message.user.username === username ? 'd-flex justify-content-end' : 'd-flex justify-content-start'">
+                <span class="mx-3"
+                  :class="{ 'card-text': true, 'speech-bubble': true, 'speech-bubble-user': message.user.username === username, 'speech-bubble-peer': message.user.username !== username, 'text-white': message.user.username === username, 'subtle-blue-gradient': message.user.username === username }">
+                  {{ message.message }}
                 </span>
               </div>
-              <div class="col-sm-2">
-                <div class="circle-icon rounded-circle">A</div>
-              </div>
-            </div>
-            <div class="row chat-section">
-              <div class="col-sm-2">
-                <div class="circle-icon rounded-circle">D</div>
-              </div>
-              <div class="col-sm-7">
-                <p class="card-text speech-bubble speech-bubble-peer">
-                  Yes this is Chatire, it's pretty cool and it's Open source
-                  and it was built with Django and Vue JS so we can tweak it to our satisfaction.
-                </p>
-              </div>
-            </div>
-            <div class="row chat-section">
-              <div class="col-sm-7 offset-md-3">
-                <p class="card-text speech-bubble speech-bubble-user float-end text-white subtle-blue-gradient">
-                  Okay i'm already hacking around let me see what i can do to this thing.
-                </p>
-              </div>
-              <div class="col-sm-2">
-                <div class="circle-icon rounded-circle">A</div>
-              </div>
-            </div>
-            <div class="row chat-section">
-              <div class="col-sm-7 offset-md-3">
-                <p class="card-text speech-bubble speech-bubble-user float-end text-white subtle-blue-gradient">
-                  We should invite james to see this.
-                </p>
-              </div>
-              <div class="col-sm-2">
-                <div class="circle-icon rounded-circle">A</div>
+              <div v-if="message.user.username === username" class="">
+                <div class="circle-icon rounded-circle">{{ message.user.username.charAt(0).toUpperCase() }}</div>
               </div>
             </div>
           </div>
         </div>
 
         <div class="card-footer text-muted">
-          <form>
+          <form @submit.prevent="postMessage">
             <div class="row">
               <div class="col-sm-10">
-                <input type="text" class="form-control" placeholder="Type a message" />
+                <input v-model="message" class="form-control" type="text" placeholder="Type a message" />
               </div>
               <div class="col-sm-2">
                 <button class="btn btn-primary">Send</button>
@@ -75,7 +41,7 @@
         </div>
       </div>
 
-      <div v-else>
+      <div v-else class="card border-0">
         <h3 class="text-center">Welcome !</h3>
 
         <br />
@@ -94,24 +60,130 @@
   </div>
 </template>
 
+
 <script lang="ts">
 export default {
   name: 'ChatComponent',
   data() {
     return {
       sessionStarted: false,
-      username: ''
+      username: '',
+      messages: [] as Array<{ user: { username: string }, message: string }>,
+      message: ''
     }
   },
 
   created() {
     this.username = sessionStorage.getItem('username') || '';
+
+    if (this.$route.params.uri) {
+      this.joinChatSession()
+    }
   },
 
   methods: {
-    startChatSession() {
-      this.sessionStarted = true
-      this.$router.push('/chats/chat_url/')
+    async startChatSession() {
+      try {
+        const response = await fetch('http://localhost:8000/api/chats/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${sessionStorage.getItem('authToken')}`
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+
+          this.sessionStarted = true;
+          this.$router.push(`/chats/${data.uri}/`);
+        } else {
+          const errorText = await response.text();
+          alert(errorText);
+        }
+      } catch (error) {
+        console.error('Error starting chat session:', error);
+        alert('Failed to start chat session. Please try again.');
+      }
+    },
+
+    async postMessage() {
+      const data = { message: this.message };
+
+      try {
+        const response = await fetch(`http://localhost:8000/api/chats/${this.$route.params.uri}/messages/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${sessionStorage.getItem('authToken')}`
+          },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          const responseData = await response.json();
+          this.messages.push(responseData);
+          this.message = ''; // clear the message after sending
+        } else {
+          const errorText = await response.text();
+          alert(errorText);
+        }
+      } catch (error) {
+        console.error('Error posting message:', error);
+        alert('Failed to post message. Please try again.');
+      }
+    },
+
+    async joinChatSession() {
+      const uri = this.$route.params.uri;
+
+      try {
+        const response = await fetch(`http://localhost:8000/api/chats/${uri}/`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${sessionStorage.getItem('authToken')}`
+          },
+          body: JSON.stringify({ username: this.username })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const user = data.members.find((member: { username: string }) => member.username === this.username);
+
+          if (user) {
+            this.sessionStarted = true;
+            this.fetchChatSessionHistory();
+          }
+        } else {
+          const errorText = await response.text();
+          alert(errorText);
+        }
+      } catch (error) {
+        console.error('Error joining chat session:', error);
+        alert('Failed to join chat session. Please try again.');
+      }
+    },
+
+    async fetchChatSessionHistory() {
+      try {
+        const response = await fetch(`http://127.0.0.1:8000/api/chats/${this.$route.params.uri}/messages/`, {
+          headers: {
+            'Authorization': `Token ${sessionStorage.getItem('authToken')}`
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          this.messages = data.messages;
+        } else {
+          const errorText = await response.text();
+          alert(errorText);
+        }
+      } catch (error) {
+        console.error('Error fetching chat session history:', error);
+        alert('Failed to fetch chat session history. Please try again.');
+      }
     }
   }
 }

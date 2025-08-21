@@ -1,0 +1,29 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    container_name: 'rabbitmq_api_client'
+    volumes:
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+    environment:
+      - RABBITMQ_DEFAULT_USER=cuongnd
+      - RABBITMQ_DEFAULT_PASS=Abcd1234
+      - RABBITMQ_CONFIG_FILE=/etc/rabbitmq/rabbitmq.conf
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: 'postgres_db'
+    restart: always
+    environment:
+      POSTGRES_USER: cuongnd
+      POSTGRES_PASSWORD: Abcd1234
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+volumes:
+  postgres_data:
